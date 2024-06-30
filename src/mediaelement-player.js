@@ -91,8 +91,7 @@ MediaElementPlayer.prototype.init = function(eventEmitter) {
   if (!mediaElementHasSource(self._mediaElement)) {
     return Promise.resolve();
   }
-  else if (self._mediaElement.error &&
-           self._mediaElement.error.code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+  else if (self._mediaElement.error && self._mediaElement.error.code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
     // The media element has a source, but the format is not supported.
     return Promise.reject(self._mediaElement.error);
   }
@@ -134,10 +133,7 @@ MediaElementPlayer.prototype.destroy = function() {
   for (let i = 0; i < this._listeners.length; i++) {
     const listener = this._listeners[i];
 
-    this._mediaElement.removeEventListener(
-      listener.type,
-      listener.callback
-    );
+    this._mediaElement.removeEventListener(listener.type, listener.callback);
   }
 
   this._listeners.length = 0;
@@ -154,7 +150,7 @@ MediaElementPlayer.prototype.pause = function() {
 };
 
 MediaElementPlayer.prototype.isPlaying = function() {
-  return !this._mediaElement.paused;
+  return !this._mediaElement || !this._mediaElement.paused;
 };
 
 MediaElementPlayer.prototype.isSeeking = function() {
