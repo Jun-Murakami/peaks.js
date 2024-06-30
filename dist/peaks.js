@@ -9291,7 +9291,7 @@
 	  this._mediaElement.pause();
 	};
 	MediaElementPlayer.prototype.isPlaying = function () {
-	  return this._mediaElement || !this._mediaElement.paused;
+	  return this._mediaElement && !this._mediaElement.paused;
 	};
 	MediaElementPlayer.prototype.isSeeking = function () {
 	  return this._mediaElement.seeking;
