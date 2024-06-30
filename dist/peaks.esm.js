@@ -2101,7 +2101,7 @@ MediaElementPlayer.prototype.pause = function () {
   this._mediaElement.pause();
 };
 MediaElementPlayer.prototype.isPlaying = function () {
-  return this._mediaElement && !this._mediaElement.paused;
+  return !this._mediaElement.paused;
 };
 MediaElementPlayer.prototype.isSeeking = function () {
   return this._mediaElement.seeking;
@@ -2327,10 +2327,12 @@ Player.prototype.playSegment = function (segment, loop) {
   return self.play();
 };
 Player.prototype._playSegmentTimerCallback = function () {
-  if (!this.isPlaying()) {
+  if (!this._adapter || !this.isPlaying()) {
     this._playingSegment = false;
     return;
-  } else if (this.getCurrentTime() >= this._segment.endTime) {
+  }
+  var currentTime = this.getCurrentTime();
+  if (currentTime === null || currentTime >= this._segment.endTime) {
     if (this._loop) {
       this.seek(this._segment.startTime);
     } else {
@@ -2340,7 +2342,7 @@ Player.prototype._playSegmentTimerCallback = function () {
       return;
     }
   }
-  window.requestAnimationFrame(this._playSegmentTimerCallback);
+  this._animationFrameId = window.requestAnimationFrame(this._playSegmentTimerCallback);
 };
 Player.prototype._setSource = function (options) {
   return this._adapter.setSource(options);

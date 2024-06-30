@@ -44,7 +44,7 @@ function validateAdapter(adapter) {
       throw new TypeError('Peaks.init(): Player method ' + method + ' is undefined');
     }
 
-    if ((typeof adapter[method]) !== 'function') {
+    if (typeof adapter[method] !== 'function') {
       throw new TypeError('Peaks.init(): Player method ' + method + ' is not a function');
     }
   });
@@ -163,12 +163,8 @@ Player.prototype.seek = function(time) {
 Player.prototype.playSegment = function(segment, loop) {
   const self = this;
 
-  if (!segment ||
-    !isValidTime(segment.startTime) ||
-    !isValidTime(segment.endTime)) {
-    return Promise.reject(
-      new Error('peaks.player.playSegment(): parameter must be a segment object')
-    );
+  if (!segment || !isValidTime(segment.startTime) || !isValidTime(segment.endTime)) {
+    return Promise.reject(new Error('peaks.player.playSegment(): parameter must be a segment object'));
   }
 
   self._segment = segment;
@@ -192,11 +188,14 @@ Player.prototype.playSegment = function(segment, loop) {
 };
 
 Player.prototype._playSegmentTimerCallback = function() {
-  if (!this.isPlaying()) {
+  if (!this._adapter || !this.isPlaying()) {
     this._playingSegment = false;
     return;
   }
-  else if (this.getCurrentTime() >= this._segment.endTime) {
+
+  const currentTime = this.getCurrentTime();
+
+  if (currentTime === null || currentTime >= this._segment.endTime) {
     if (this._loop) {
       this.seek(this._segment.startTime);
     }
@@ -208,7 +207,7 @@ Player.prototype._playSegmentTimerCallback = function() {
     }
   }
 
-  window.requestAnimationFrame(this._playSegmentTimerCallback);
+  this._animationFrameId = window.requestAnimationFrame(this._playSegmentTimerCallback);
 };
 
 Player.prototype._setSource = function(options) {
