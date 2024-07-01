@@ -192,10 +192,7 @@ Player.prototype._playSegmentTimerCallback = function() {
     this._playingSegment = false;
     return;
   }
-
-  const currentTime = this.getCurrentTime();
-
-  if (currentTime && currentTime >= this._segment.endTime) {
+  else if (this.getCurrentTime() >= this._segment.endTime) {
     if (this._loop) {
       this.seek(this._segment.startTime);
     }
@@ -207,7 +204,7 @@ Player.prototype._playSegmentTimerCallback = function() {
     }
   }
 
-  this._animationFrameId = window.requestAnimationFrame(this._playSegmentTimerCallback);
+  window.requestAnimationFrame(this._playSegmentTimerCallback);
 };
 
 Player.prototype._setSource = function(options) {

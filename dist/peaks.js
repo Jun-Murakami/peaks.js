@@ -9297,7 +9297,7 @@
 	  return this._mediaElement.seeking;
 	};
 	MediaElementPlayer.prototype.getCurrentTime = function () {
-	  return this._mediaElement && this._mediaElement.currentTime;
+	  return this._mediaElement.currentTime;
 	};
 	MediaElementPlayer.prototype.getDuration = function () {
 	  return this._mediaElement.duration;
@@ -9520,9 +9520,7 @@
 	  if (!this.isPlaying()) {
 	    this._playingSegment = false;
 	    return;
-	  }
-	  var currentTime = this.getCurrentTime();
-	  if (currentTime && currentTime >= this._segment.endTime) {
+	  } else if (this.getCurrentTime() >= this._segment.endTime) {
 	    if (this._loop) {
 	      this.seek(this._segment.startTime);
 	    } else {
@@ -9532,7 +9530,7 @@
 	      return;
 	    }
 	  }
-	  this._animationFrameId = window.requestAnimationFrame(this._playSegmentTimerCallback);
+	  window.requestAnimationFrame(this._playSegmentTimerCallback);
 	};
 	Player.prototype._setSource = function (options) {
 	  return this._adapter.setSource(options);

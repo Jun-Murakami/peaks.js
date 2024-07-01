@@ -158,7 +158,7 @@ MediaElementPlayer.prototype.isSeeking = function() {
 };
 
 MediaElementPlayer.prototype.getCurrentTime = function() {
-  return this._mediaElement && this._mediaElement.currentTime;
+  return this._mediaElement.currentTime;
 };
 
 MediaElementPlayer.prototype.getDuration = function() {
