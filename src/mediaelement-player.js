@@ -145,8 +145,8 @@ MediaElementPlayer.prototype.play = function() {
   return this._mediaElement.play();
 };
 
-MediaElementPlayer.prototype.pause = function() {
-  this._mediaElement.pause();
+MediaElementPlayer.prototype.isPlaying = function() {
+  return this._mediaElement && !this._mediaElement.paused;
 };
 
 MediaElementPlayer.prototype.isPlaying = function() {
@@ -158,7 +158,7 @@ MediaElementPlayer.prototype.isSeeking = function() {
 };
 
 MediaElementPlayer.prototype.getCurrentTime = function() {
-  return this._mediaElement.currentTime;
+  return this._mediaElement && this._mediaElement.currentTime;
 };
 
 MediaElementPlayer.prototype.getDuration = function() {

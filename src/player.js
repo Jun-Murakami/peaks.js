@@ -188,14 +188,14 @@ Player.prototype.playSegment = function(segment, loop) {
 };
 
 Player.prototype._playSegmentTimerCallback = function() {
-  if (!this._adapter || !this.isPlaying()) {
+  if (!this.isPlaying()) {
     this._playingSegment = false;
     return;
   }
 
   const currentTime = this.getCurrentTime();
 
-  if (currentTime === null || currentTime >= this._segment.endTime) {
+  if (currentTime && currentTime >= this._segment.endTime) {
     if (this._loop) {
       this.seek(this._segment.startTime);
     }
